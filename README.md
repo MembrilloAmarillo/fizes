@@ -1,2 +1,2 @@
 # fizes
-smol program to search that show files with specified minimum size
+smol program to search files with specified minimum size
