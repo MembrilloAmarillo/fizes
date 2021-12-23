@@ -1,1 +1,1 @@
-cl -Zi main.c /Wall 
+cl -Zi fizes.c /Wall 

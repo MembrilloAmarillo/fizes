@@ -36,14 +36,19 @@ inline DWORD get_file_size( DWORD size_high, DWORD size_low )
 void print_file_specification( HANDLE file_found, WIN32_FIND_DATAA file_info )
 {
     DWORD file_size = get_file_size( file_info.nFileSizeHigh, file_info.nFileSizeLow );
-    printf( "File Size: [ %lu ]\n",  file_size );
-    printf( "cFileName: [ %s ]\n", file_info.cFileName );
+    printf( "---------------------------------------\n");
+    printf( "    :    File Name : %s\n", file_info.cFileName );
+    printf( "    :    File Size : %lu\n",  file_size );
     SYSTEMTIME time;
     if ( FileTimeToSystemTime( &file_info.ftCreationTime, &time ) ) {
-        printf( "Creation time: [ Year %d, Month %d, Day %d ]\n", time.wYear, time.wMonth, time.wDay );
+        printf( "    :----Creation Time:\n" );
+        printf( "         |     Year %d\n", time.wYear  );
+        printf( "         |    Month %d\n", time.wMonth );
+        printf( "         |      Day %d\n", time.wDay   );
     } else {
         printf( "[ERROR] %ld\n", GetLastError() );
     }
+    printf( "-------------------------------------------------\n");
 }
 
 int main( int argc, char *argv[] )
@@ -61,13 +66,15 @@ int main( int argc, char *argv[] )
         fprintf( stderr, "Given %d values, expected 3", argc );
         exit( 1 );
     } else {
-        fprintf( stdout, "Selected path     => %s\n", argv[1] );
-        fprintf( stdout, "Minimum file size : %llu\n", atoll( argv[2] ) );
+        fprintf( stdout, "****************************************\n" );
+        fprintf( stdout, "    :         Selected path = %s\n", argv[1] );
+        fprintf( stdout, "    :     Minimum file size = %llu\n", atoll( argv[2] ) );
+        
         minimum_file_size = atoll( argv[2] );
         file_name = argv[1];
         path_name = (LPSTR)malloc( strlen( file_name ) * sizeof( CHAR ) );
         if( path_name == NULL ) {
-            fprintf( stderr, "[ERROR] Malloc string not valid\n" );
+            fprintf( stderr, "    :    [ERROR] Malloc string not valid\n" );
             exit( 1 );
         }
         strcpy( path_name, file_name );
@@ -75,7 +82,7 @@ int main( int argc, char *argv[] )
         if( file_name[ my_strlen(file_name) - 1 ] == '*' ) {
             path_name[ my_strlen( file_name ) - 1 ] = '\0';
         }
-        fprintf( stdout, "Starting from path => %s\n", path_name );
+        fprintf( stdout, "    :    Starting from path = %s\n", path_name );
     }
 
     directory_ret = GetCurrentDirectory( BUFF_SIZE, buffer );
@@ -90,8 +97,8 @@ int main( int argc, char *argv[] )
             fprintf( stderr, "Directory not found '%s', error [ %ld ]\n", path_name, GetLastError() );
             exit( 1 );
         } else {
-            fprintf( stdout, "Directory set in [ %s ]\n", path_name );
-            fprintf( stdout, "******************************\n" );
+            fprintf( stdout, "    :      Directory set in = %s\n", path_name );
+            fprintf( stdout, "****************************************\n" );
         }
     }
 
